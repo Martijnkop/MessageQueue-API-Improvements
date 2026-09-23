@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Api\WebApi\WebApi.csproj" />
-    <ProjectReference Include="..\ServiceInstallers\ServiceInstallers.Abstractions\ServiceInstallers.Abstractions.csproj" />
+    <ProjectReference Include="..\ServiceInstallers\Abstractions\ServiceInstallers.Abstractions.csproj" />
     <ProjectReference Include="..\ServiceInstallers\ServiceInstallers\ServiceInstallers.csproj" />
   </ItemGroup>
 

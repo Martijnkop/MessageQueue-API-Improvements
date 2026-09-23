@@ -2,11 +2,23 @@
   <Folder Name="/Api/">
     <Project Path="Api/WebApi/WebApi.csproj" />
   </Folder>
+  <Folder Name="/Business/">
+    <Project Path="Business/Abstractions/Business.Abstractions.csproj" />
+    <Project Path="Business/Business/Business.csproj" />
+  </Folder>
   <Folder Name="/Common/">
     <Project Path="Common/Primitives/Common.Primitives.csproj" />
   </Folder>
+  <Folder Name="/Domain/">
+    <Project Path="Domain/Abstractions/Domain.Abstractions.csproj" />
+    <Project Path="Domain/Models/Domain.Models.csproj" />
+  </Folder>
+  <Folder Name="/Persistence/">
+    <Project Path="Persistence/Abstractions/Persistence.Abstractions.csproj" />
+    <Project Path="Persistence/Persistence/Persistence.csproj" />
+  </Folder>
   <Folder Name="/ServiceInstallers/">
-    <Project Path="ServiceInstallers/ServiceInstallers.Abstractions/ServiceInstallers.Abstractions.csproj" />
+    <Project Path="ServiceInstallers/Abstractions/ServiceInstallers.Abstractions.csproj" />
     <Project Path="ServiceInstallers/ServiceInstallers/ServiceInstallers.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
