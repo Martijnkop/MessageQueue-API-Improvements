@@ -1,4 +1,14 @@
 <Solution>
+  <Folder Name="/Api/">
+    <Project Path="Api/WebApi/WebApi.csproj" />
+  </Folder>
+  <Folder Name="/Common/">
+    <Project Path="Common/Primitives/Common.Primitives.csproj" />
+  </Folder>
+  <Folder Name="/ServiceInstallers/">
+    <Project Path="ServiceInstallers/ServiceInstallers.Abstractions/ServiceInstallers.Abstractions.csproj" />
+    <Project Path="ServiceInstallers/ServiceInstallers/ServiceInstallers.csproj" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
   </Folder>
