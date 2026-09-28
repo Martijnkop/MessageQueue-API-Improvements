@@ -6,4 +6,14 @@
 	  <RootNamespace>POS.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 	  <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Abstractions\Domain.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Domain\Models\Domain.Models.csproj" />
+    <ProjectReference Include="..\Abstractions\Business.Abstractions.csproj" />
+  </ItemGroup>
 </Project>

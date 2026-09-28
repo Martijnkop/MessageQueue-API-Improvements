@@ -6,4 +6,8 @@
 	  <RootNamespace>POS.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 	  <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Abstractions\Domain.Abstractions.csproj" />
+  </ItemGroup>
 </Project>

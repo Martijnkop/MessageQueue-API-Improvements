@@ -6,4 +6,13 @@
 	  <RootNamespace>POS.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 	  <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Primitives\Common.Primitives.csproj" />
+    <ProjectReference Include="..\Models\Domain.Models.csproj" />
+  </ItemGroup>
 </Project>
