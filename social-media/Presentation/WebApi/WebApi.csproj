@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+	  <RootNamespace>Social.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+	  <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Business\Abstractions\Business.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Domain\Models\Domain.Models.csproj" />
+  </ItemGroup>
+</Project>
