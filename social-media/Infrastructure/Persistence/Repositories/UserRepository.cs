@@ -5,9 +5,9 @@ using Social.Persistence.Repositories.Base;
 
 namespace Social.Persistence.Repositories;
 
-public class PostRepository : Repository<Post>, IPostRepository
+public class UserRepository : Repository<User>, IUserRepository
 {
-    public PostRepository(AppDataStore dbContext, ILogger<PostRepository> logger) : base(dbContext.Posts, logger)
+    public UserRepository(AppDataStore dataStore, ILogger<UserRepository> logger) : base(dataStore.Users, logger)
     {
     }
 }

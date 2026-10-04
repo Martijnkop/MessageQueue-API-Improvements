@@ -10,7 +10,7 @@ public class PostMapper : IMapper<Post, PostResponse, CreatePostRequest, CreateP
 {
     public PostResponse Map(Post input) => _Map(input, new List<Types>())!;
 
-    internal static PostResponse? _Map(Post input, List<Types> types)
+    internal static PostResponse? _Map(Post? input, List<Types> types)
     {
         if (input is null) return null;
         List<Types> excludeTypes = [.. types];
@@ -20,7 +20,8 @@ public class PostMapper : IMapper<Post, PostResponse, CreatePostRequest, CreateP
         return new PostResponse
         {
             Id = input.Id,
-            Title = input.Title
+            Title = input.Title,
+            Message = input.Message,
         };
     }
 

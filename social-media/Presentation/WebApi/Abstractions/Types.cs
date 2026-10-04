@@ -2,5 +2,7 @@
 
 public enum Types
 {
-    Post
+    Post,
+    User,
+    Like
 }
