@@ -20,4 +20,6 @@ public class PostController : Controller<Post, PostResponse, CreatePostRequest, 
         logger)
     {
     }
+
+
 }

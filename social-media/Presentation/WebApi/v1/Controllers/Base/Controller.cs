@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Social.Business.Abstractions.Services.Base;
 using Social.Domain.Models.Base;
@@ -42,6 +43,7 @@ public class Controller<TEntity, TResponse, TCreateRequest, TEditRequest, TCreat
     }
 
     [HttpPost]
+    [Authorize]
     public virtual async Task<ActionResult<TResponse>> CreateAsync([FromBody] TCreateRequest createModel, CancellationToken ct)
     {
         var entity = await _service.CreateAsync(_mapper.Map(createModel), ct);
