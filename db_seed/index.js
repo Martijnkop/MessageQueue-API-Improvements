@@ -17,6 +17,17 @@ async function seedUsers() {
         })
     
         console.log(i)
+
+        const keycloakUrl = "http://localhost:8080/realms/social/protocol/openid-connect/token";
+
+        const body = new URLSearchParams({
+            grant_type: "password",
+            client_id: "my-client",
+            username: "myuser",
+            password: "mypassword",
+            scope: "openid",
+            // client_secret: "YOUR_CLIENT_SECRET", // only for confidential clients
+        });
     }
 }
 
