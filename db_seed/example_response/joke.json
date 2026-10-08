@@ -1,0 +1,22 @@
+{
+    "error": false,
+    "amount": 10,
+    "jokes": [
+        {
+            "category": "Dark",
+            "type": "single",
+            "joke": "I'll never forget my Granddad's last words to me just before he died. \"Are you still holding the ladder?\"",
+            "flags": {
+                "nsfw": false,
+                "religious": false,
+                "political": false,
+                "racist": false,
+                "sexist": false,
+                "explicit": false
+            },
+            "id": 207,
+            "safe": false,
+            "lang": "en"
+        }
+    ]
+}
