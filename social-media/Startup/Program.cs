@@ -22,8 +22,6 @@ if (app.Environment.IsDevelopment() || app.Configuration.GetValue("EnableScalar"
     app.MapScalarApiReference();
 }
 
-app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();

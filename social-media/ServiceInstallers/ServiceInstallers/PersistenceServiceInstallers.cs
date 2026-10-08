@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Social.Business.Config;
 using Social.Persistence;
 using Social.Persistence.Config;
 using Social.ServiceInstallers.Abstractions;
