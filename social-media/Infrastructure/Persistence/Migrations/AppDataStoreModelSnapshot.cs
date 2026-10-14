@@ -82,6 +82,9 @@ namespace Social.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("KeycloakId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text");
@@ -94,7 +97,7 @@ namespace Social.Persistence.Migrations
             modelBuilder.Entity("Social.Domain.Models.Like", b =>
                 {
                     b.HasOne("Social.Domain.Models.Post", "Post")
-                        .WithMany()
+                        .WithMany("Likes")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -119,6 +122,11 @@ namespace Social.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Social.Domain.Models.Post", b =>
+                {
+                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("Social.Domain.Models.User", b =>

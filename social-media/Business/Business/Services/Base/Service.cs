@@ -10,12 +10,14 @@ public abstract class Service<T, TCreate, TEdit> : IService<T, TCreate, TEdit>
     where T : Entity
 {
     private readonly IRepository<T> _repository;
+    private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger _logger;
 
-    public Service(IRepository<T> repository, IUnitOfWork unitOfWork, ILogger logger)
+    public Service(IRepository<T> repository, IUserRepository userRepository, IUnitOfWork unitOfWork, ILogger logger)
     {
         _repository = repository;
+        _userRepository = userRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
@@ -32,10 +34,11 @@ public abstract class Service<T, TCreate, TEdit> : IService<T, TCreate, TEdit>
         return _repository.GetByIdAsync(id, ct);
     }
 
-    public async Task<T> CreateAsync(TCreate entity, CancellationToken ct)
+    public async Task<T> CreateAsync(TCreate entity, Guid keycloakId, CancellationToken ct)
     {
         _logger.LogInformation("Creating entity of type {EntityType}", typeof(T).Name);
-        var value = await _repository.CreateAsync(Map(entity), ct);
+        Guid userId = await _userRepository.GetIdByKeycloakIdAsync(keycloakId, ct) ?? throw new NotImplementedException();
+        var value = await _repository.CreateAsync(Map(entity, userId), ct);
         await _unitOfWork.SaveChangesAsync(ct);
         return await GetByIdAsync(value.Entity.Id, ct);
     }
@@ -59,5 +62,5 @@ public abstract class Service<T, TCreate, TEdit> : IService<T, TCreate, TEdit>
     }
 
     protected abstract T Update(T value, TEdit entity);
-    protected abstract T Map(TCreate entity);
+    protected abstract T Map(TCreate entity, Guid userId);
 }

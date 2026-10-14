@@ -6,8 +6,9 @@ namespace Social.Domain.Models
 {
     public record User : Entity
     {
+        public required Guid KeycloakId { get; set; }
         public required string Username { get; set; }
-        public List<Post>? Posts { get; set; } = [];
-        public List<Like>? Likes { get; set; } = [];
+        public List<Post>? Posts { get; set; }
+        public List<Like>? Likes { get; set; }
     }
 }

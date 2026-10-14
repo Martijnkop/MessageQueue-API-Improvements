@@ -16,6 +16,13 @@ public class UserController : Controller<User, UserResponse, CreateUserRequest, 
     {
     }
 
+    [NonAction]
+    public override Task<ActionResult<UserResponse>> CreateAsync([FromBody] CreateUserRequest createModel, CancellationToken ct)
+    {
+        return base.CreateAsync(createModel, ct);
+    }
+
+
     // NonAction to remove the Edit endpoint for users
     [NonAction]
     public override Task<ActionResult<UserResponse>> EditAsync(Guid id, [FromBody] EditUserRequest editUserRequest, CancellationToken ct)

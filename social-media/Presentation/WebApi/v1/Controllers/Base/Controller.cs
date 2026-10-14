@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Social.Business.Abstractions.Services.Base;
+using Social.Domain.Models;
 using Social.Domain.Models.Base;
 using Social.WebApi.Abstractions;
+using System.Security.Claims;
 
 namespace Social.WebApi.v1.Controllers.Base;
 
@@ -13,7 +15,7 @@ public class Controller<TEntity, TResponse, TCreateRequest, TEditRequest, TCreat
     where TEntity : Entity
 {
     private readonly IService<TEntity, TCreateDTO, TEditDTO>  _service;
-    private readonly IMapper<TEntity, TResponse, TCreateRequest, TCreateDTO, TEditRequest, TEditDTO> _mapper;
+    protected readonly IMapper<TEntity, TResponse, TCreateRequest, TCreateDTO, TEditRequest, TEditDTO> _mapper;
     private readonly ILogger _logger;
     public Controller(IService<TEntity, TCreateDTO, TEditDTO> service, IMapper<TEntity, TResponse, TCreateRequest, TCreateDTO, TEditRequest, TEditDTO> mapper, ILogger logger)
     {
@@ -23,10 +25,10 @@ public class Controller<TEntity, TResponse, TCreateRequest, TEditRequest, TCreat
     }
 
     [HttpGet]
-    public virtual async Task<ActionResult<IEnumerable<TEntity>>> GetAllAsync(CancellationToken ct)
+    public virtual async Task<ActionResult<IEnumerable<TResponse>>> GetAllAsync(CancellationToken ct)
     {
         var entities = await _service.GetAllAsync(ct);
-        return Ok(entities);
+        return Ok(entities.Select(_mapper.Map));
     }
 
     [HttpGet]
@@ -42,11 +44,20 @@ public class Controller<TEntity, TResponse, TCreateRequest, TEditRequest, TCreat
         return Ok(_mapper.Map(entity));
     }
 
+
     [HttpPost]
     [Authorize]
+    // Big chance this base implementation is useless lol
     public virtual async Task<ActionResult<TResponse>> CreateAsync([FromBody] TCreateRequest createModel, CancellationToken ct)
     {
-        var entity = await _service.CreateAsync(_mapper.Map(createModel), ct);
+        var claimsUser = HttpContext.User;
+        
+        var sub = claimsUser.FindFirstValue("sub")
+              ?? claimsUser.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (!Guid.TryParse(sub, out var keycloakId)) throw new NotImplementedException(); // This should not be possible, as we use the same validation in the middleware
+
+        var entity = await _service.CreateAsync(_mapper.Map(createModel), keycloakId, ct);
         return CreatedAtAction(nameof(GetByIdAsync), new { id = entity.Id }, _mapper.Map(entity));
     }
 
