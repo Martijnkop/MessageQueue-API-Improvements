@@ -17,19 +17,25 @@ builder.Services.AddControllers(options => options.SuppressAsyncSuffixInActionNa
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.MetadataAddress = builder.Configuration["Keycloak:MetadataAddress"] ?? throw new Exception();
-        options.Audience = builder.Configuration["Keycloak:Audience"] ?? throw new Exception();
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddJwtBearer(options =>
+//    {
+//        options.MetadataAddress = builder.Configuration["Keycloak:MetadataAddress"] ?? throw new Exception();
+//        options.Audience = builder.Configuration["Keycloak:Audience"] ?? throw new Exception();
 
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidIssuer = builder.Configuration["Keycloak:Issuer"] ?? throw new Exception()
-        };
+//        options.TokenValidationParameters = new TokenValidationParameters
+//        {
+//            ValidIssuer = builder.Configuration["Keycloak:Issuer"] ?? throw new Exception()
+//        };
 
-        options.RequireHttpsMetadata = false;
-    });
+//        options.RequireHttpsMetadata = false;
+//    });
+
+builder.Services.AddKratosAuthentication(o =>
+{
+    o.PublicUrl = builder.Configuration["Kratos:PublicUrl"] ?? "http://kratos:4433";
+});
+
 
 builder.Services.AddAuthorization();
 
