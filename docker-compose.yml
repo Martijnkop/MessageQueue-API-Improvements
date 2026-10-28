@@ -1,6 +1,10 @@
 services:
   database:
+<<<<<<< Updated upstream
     container_name: database_social
+=======
+    container_name: social_db
+>>>>>>> Stashed changes
     image: "postgres:latest"
     ports:
       - 5432:5432
@@ -9,7 +13,7 @@ services:
         POSTGRES_PASSWORD: postgres
         POSTGRES_DB: database
     volumes:
-      - ./database/v1:/var/lib/postgresql
+      - social_db:/var/lib/postgresql
     networks:
       - social_network
 
@@ -17,7 +21,11 @@ services:
     image: oryd/kratos:latest
     restart: on-failure
     environment:
+<<<<<<< Updated upstream
       DSN: postgres://kratosdb_social:password@kratosdb:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
+=======
+      DSN: postgres://kratos:password@kratosdb:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
+>>>>>>> Stashed changes
     networks:
       - kratos_internal
     volumes:
@@ -30,7 +38,11 @@ services:
     depends_on:
       - kratos_migrate
     environment:
+<<<<<<< Updated upstream
       DSN: postgres://kratosdb_social:password@kratosdb:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4-
+=======
+      DSN: postgres://kratos:password@kratosdb:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4-
+>>>>>>> Stashed changes
     ports:
       - 4433:4433 # public
       - 4434:4434 # admin
@@ -41,6 +53,7 @@ services:
       - ./kratos:/etc/config/kratos
     command: serve -c /etc/config/kratos/kratos.yml --dev --watch-courier
 
+<<<<<<< Updated upstream
   kratos_ui:
     image: oryd/kratos-selfservice-ui-node:latest
     environment:
@@ -57,6 +70,10 @@ services:
 
   kratos_db:
     container_name: kratosdb_social
+=======
+  kratos_db:
+    container_name: kratos_social_db
+>>>>>>> Stashed changes
     image: postgres:latest
     ports:
       - 5433:5432
@@ -66,9 +83,15 @@ services:
       POSTGRES_DB: kratos
     networks:
       - kratos_internal
+<<<<<<< Updated upstream
 
 
 volumes:
+=======
+
+volumes:
+  social_db:
+>>>>>>> Stashed changes
   kratos_data:
 
 networks:
