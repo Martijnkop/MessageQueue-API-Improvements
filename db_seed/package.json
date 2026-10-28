@@ -11,6 +11,11 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
+    "@types/pg": "^8.23.1",
     "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "pg": "^8.23.1",
+    "uuid": "^14.0.3"
   }
 }

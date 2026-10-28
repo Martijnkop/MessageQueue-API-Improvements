@@ -1,10 +1,15 @@
 import { Utf8Stream } from "fs"
 import { DatabaseSync } from "node:sqlite"
+import { createProgressLogger } from "./progress_logger.ts"
 const database = new DatabaseSync("database.db")
 
-const USERCOUNT = 1000
-const POSTCOUNT = 5000
-const LIKECOUNT = 100000
+// const USERCOUNT = 1000
+// const POSTCOUNT = 5000
+// const LIKECOUNT = 100000
+
+const USERCOUNT = 10
+const POSTCOUNT = 50
+const LIKECOUNT = 100
 
 const POST_SKEW = 0.75
 const LIKE_USER_SKEW = 0.75
@@ -19,9 +24,14 @@ type RandomUserResponse = {
     }[]
 }
 
-type JokeResponse = { jokes: { joke: string }[] } | { joke: string }
+type PostResponse = {
+  posts: {
+    title: string,
+    body: string
+    }[]
+  }
 
-function resetDatabase(): void {
+export function resetDatabase(): void {
   database.exec(`
     DROP TABLE IF EXISTS likes;
     DROP TABLE IF EXISTS posts;
@@ -29,13 +39,15 @@ function resetDatabase(): void {
   `)
 }
 
-function initDatabase() {
+export function initDatabase() {
   database.exec(`
     CREATE TABLE IF NOT EXISTS users(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      social_userid TEXT,
       email TEXT NOT NULL,
       password TEXT NOT NULL,
-      accessToken TEXT
+      accessToken TEXT,
+      CONSTRAINT unique_email UNIQUE (email)
     )
     `)
 
@@ -44,6 +56,7 @@ function initDatabase() {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       userId INTEGER NOT NULL,
       content TEXT NOT NULL,
+      social_id TEXT,
       CONSTRAINT fk_post_user FOREIGN KEY (userId) REFERENCES users(id)
     )
     `)
@@ -89,30 +102,8 @@ function createWeightedPicker(ids: number[], skew: number): () => number {
   }
 }
 
-function createProgressLogger(
-  label: string,
-  target: number,
-  stepPercent = 10,
-): (current: number) => void {
-  let lastBucket = -1
-
-  return (current: number) => {
-    const percent = Math.min(100, Math.floor((current / target) * 100))
-    const bucket = percent === 100 ? 100 : Math.floor(percent / stepPercent)
-    if (bucket === lastBucket) return
-    lastBucket = bucket
-
-    const width = 20
-    const filled = Math.round((percent / 100) * width)
-    const bar = "#".repeat(filled) + ".".repeat(width - filled)
-    console.log(
-      `${label.padEnd(6)} [${bar}] ${String(percent).padStart(3)}%  (${current}/${target})`,
-    )
-  }
-}
-
-
-async function seedUsers(userCount: number) {
+export async function seedUsers(userCount: number) {
+  console.log(countRows("users"))
   let remaining = userCount - countRows("users")
   if (remaining <= 0) {
     console.log(`users: already has ${countRows("users")} users`)
@@ -120,19 +111,19 @@ async function seedUsers(userCount: number) {
   }
 
   const insertUser = database.prepare(
-    "INSERT INTO users (email, password) VALUES (?, ?)",
+    "INSERT OR IGNORE INTO users (email, password) VALUES (?, ?)",
   )
 
-  const logProgress = createProgressLogger("users", userCount)
+  const logProgress = createProgressLogger("users", remaining)
   logProgress(countRows("users"))
 
 
-  while (userCount > 0) {
-    const batchSize = Math.min(userCount, 1000)
+  while (remaining > 0) {
+    const batchSize = Math.min(remaining, 1000)
     const response = await fetch(`https://randomuser.me/api/?results=${batchSize}`);
 
     const data = (await response.json()) as RandomUserResponse
-    userCount -= batchSize
+    remaining -= batchSize
 
     database.exec("BEGIN")
     for (const user of data.results) {
@@ -144,7 +135,7 @@ async function seedUsers(userCount: number) {
 }
 
 
-async function seedPosts(postCount: number) {
+export async function seedPosts(postCount: number) {
   let remaining = postCount - countRows("posts")
   if (remaining <= 0) {
     console.log(`posts: already has ${countRows("posts")} posts`)
@@ -164,29 +155,37 @@ async function seedPosts(postCount: number) {
   const logProgress = createProgressLogger("posts", postCount)
   logProgress(countRows("posts"))
 
+  const WORDS_PER_POST = 25
 
   while (remaining > 0) {
-    const batchSize = Math.min(remaining, 10) // 10 per request is the max
+    const batchSize = Math.min(remaining, 4000)
     const response = await fetch(
-      `https://v2.jokeapi.dev/joke/Any?type=single&amount=${batchSize}`,
+      `https://fakeapi.net/lorem/${batchSize * WORDS_PER_POST}`,
     )
-    const data = (await response.json()) as JokeResponse
-    remaining -= batchSize
+    const { text } = (await response.json()) as { text: string }
+    const words = text.split(/\s+/).filter(Boolean)
 
-    const jokes = "jokes" in data ? data.jokes : [data] // amount=1 returns one object
+    // Guard against the API returning fewer words than requested
+    const postCount = Math.min(batchSize, Math.floor(words.length / WORDS_PER_POST))
+    if (postCount === 0) throw new Error("API returned too few words")
 
     database.exec("BEGIN")
-    for (const post of jokes) {
-      insertPost.run(pickUserId(), post.joke)
+    for (let i = 0; i < postCount; i++) {
+      const body = words
+        .slice(i * WORDS_PER_POST, (i + 1) * WORDS_PER_POST)
+        .join(" ")
+      insertPost.run(pickUserId(), body)
     }
     database.exec("COMMIT")
+
+    remaining -= postCount
     logProgress(countRows("posts"))
   }
 
   console.log(`posts: now has ${countRows("posts")} posts`)
 }
 
-async function seedLikes(likesCount: number) {
+export async function seedLikes(likesCount: number) {
   const remaining = likesCount - countRows("likes")
   if (remaining <= 0) {
     console.log(`likes: already has ${countRows("likes")}, nothing to seed`)
@@ -253,9 +252,9 @@ async function seedLikes(likesCount: number) {
 }
 
 
-resetDatabase()
-initDatabase()
+// resetDatabase()
+// initDatabase()
 
-await seedUsers(USERCOUNT);
-await seedPosts(POSTCOUNT);
-await seedLikes(LIKECOUNT);
+// await seedUsers(USERCOUNT);
+// await seedPosts(POSTCOUNT);
+// await seedLikes(LIKECOUNT);
