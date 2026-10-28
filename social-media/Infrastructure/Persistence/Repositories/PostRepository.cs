@@ -9,8 +9,10 @@ namespace Social.Persistence.Repositories;
 
 public class PostRepository : Repository<Post>, IPostRepository
 {
+    private readonly AppDataStore _dbContext;
     public PostRepository(AppDataStore dbContext, ILogger<PostRepository> logger) : base(dbContext.Posts, logger)
     {
+        _dbContext = dbContext;
     }
 
     public Task<List<GetFeedDTO>> GetFeedAsync()
@@ -28,5 +30,10 @@ public class PostRepository : Repository<Post>, IPostRepository
             User = post.User,
             LikeCount = post.Likes!.Count(),
         }).AsNoTracking().ToListAsync();
+    }
+
+    public async Task LikeAsync(Like like, CancellationToken ct)
+    {
+        await _dbContext.Likes.AddAsync(like, ct);
     }
 }

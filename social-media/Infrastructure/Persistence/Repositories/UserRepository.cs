@@ -17,6 +17,8 @@ public class UserRepository : Repository<User>, IUserRepository
         return _dbSet.AnyAsync(u => u.KeycloakId == keycloakId, ct);
     }
 
+    public Task<User?> GetByKratosIdAsync(Guid kratosId, CancellationToken ct) => _dbSet.Where(u => u.KeycloakId == kratosId).FirstOrDefaultAsync(ct);
+
     public Task<Guid?> GetIdByKeycloakIdAsync(Guid keycloakId, CancellationToken ct)
     {
         return _dbSet

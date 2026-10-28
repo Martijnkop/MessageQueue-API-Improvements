@@ -41,9 +41,10 @@ namespace Social.Persistence.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "PostId")
+                        .IsUnique();
 
-                    b.ToTable("Like");
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("Social.Domain.Models.Post", b =>
@@ -90,6 +91,9 @@ namespace Social.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("KeycloakId")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });

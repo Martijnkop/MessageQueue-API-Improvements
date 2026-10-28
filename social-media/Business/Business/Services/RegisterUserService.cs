@@ -27,7 +27,7 @@ public class RegisterUserService : IRegisterUserService, ITransient
             Id = Guid.CreateVersion7(),
             CreatedTime = DateTime.UtcNow,
             KeycloakId = keycloakId,
-            Username = claimsUser.FindFirst("preferred_username")?.Value ?? "",
+            Username = claimsUser.FindFirst(ClaimTypes.Email)?.Value ?? "",
         };
 
         await _repository.CreateAsync(user, ct);

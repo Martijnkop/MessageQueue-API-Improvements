@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Social.Presentation.WebApi.Middleware.Kratos;
+using Social.WebApi.Middleware.Kratos.Models;
 using System.Security.Claims;
 using System.Text.Json;
 

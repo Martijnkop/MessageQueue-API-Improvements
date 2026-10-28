@@ -5,6 +5,7 @@ using Scalar.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Social.WebApi.Middleware;
+using Social.WebApi.Middleware.Kratos;
 
 var builder = WebApplication.CreateBuilder(args);
 

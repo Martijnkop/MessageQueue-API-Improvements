@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Social.Business.Abstractions.Services;
 using Social.Domain.Models;
@@ -8,6 +9,7 @@ using Social.WebApi.Mappers;
 using Social.WebApi.v1.Controllers.Base;
 using Social.WebApi.v1.Models.Request;
 using Social.WebApi.v1.Models.Response;
+using System.Security.Claims;
 
 namespace Social.WebApi.v1.Controllers;
 
@@ -46,5 +48,18 @@ public class PostController : Controller<Post, PostResponse, CreatePostRequest, 
             User = new UserMapper().Map(post.User!),
             LikeCount = post.LikeCount,
         }));
+    }
+
+    [HttpPost("like")]
+    public async Task<ActionResult> Like([FromBody] Guid postId, CancellationToken ct)
+    {
+        var claimsUser = HttpContext.User;
+        var sub = claimsUser.FindFirstValue("sub")
+              ?? claimsUser.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (!Guid.TryParse(sub, out var kratosId)) throw new NotImplementedException(); // This should not be possible, as we use the same validation in the middleware
+
+        await _productService.LikeAsync(kratosId, postId, ct);
+        return Ok();
     }
 }

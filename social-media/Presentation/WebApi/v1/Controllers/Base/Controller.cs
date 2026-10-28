@@ -55,9 +55,9 @@ public class Controller<TEntity, TResponse, TCreateRequest, TEditRequest, TCreat
         var sub = claimsUser.FindFirstValue("sub")
               ?? claimsUser.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if (!Guid.TryParse(sub, out var keycloakId)) throw new NotImplementedException(); // This should not be possible, as we use the same validation in the middleware
+        if (!Guid.TryParse(sub, out var kratosId)) throw new NotImplementedException(); // This should not be possible, as we use the same validation in the middleware
 
-        var entity = await _service.CreateAsync(_mapper.Map(createModel), keycloakId, ct);
+        var entity = await _service.CreateAsync(_mapper.Map(createModel), kratosId, ct);
         return CreatedAtAction(nameof(GetByIdAsync), new { id = entity.Id }, _mapper.Map(entity));
     }
 

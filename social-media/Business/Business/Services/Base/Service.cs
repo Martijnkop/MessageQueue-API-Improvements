@@ -11,7 +11,7 @@ public abstract class Service<T, TCreate, TEdit> : IService<T, TCreate, TEdit>
 {
     private readonly IRepository<T> _repository;
     private readonly IUserRepository _userRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    protected readonly IUnitOfWork _unitOfWork;
     private readonly ILogger _logger;
 
     public Service(IRepository<T> repository, IUserRepository userRepository, IUnitOfWork unitOfWork, ILogger logger)

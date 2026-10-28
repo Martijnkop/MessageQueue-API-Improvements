@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Social.WebApi.Middleware.Kratos.Models;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json;
