@@ -1,6 +1,6 @@
 services:
   database:
-    container_name: database
+    container_name: database_social
     image: "postgres:latest"
     ports:
       - 5432:5432
@@ -17,7 +17,7 @@ services:
     image: oryd/kratos:latest
     restart: on-failure
     environment:
-      DSN: postgres://kratos:password@kratosdb:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
+      DSN: postgres://kratosdb_social:password@kratosdb:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
     networks:
       - kratos_internal
     volumes:
@@ -25,12 +25,12 @@ services:
     command: -c /etc/config/kratos/kratos.yml migrate sql -e --yes
 
   kratos:
-    container_name: kratos
+    container_name: kratos_social
     image: oryd/kratos:latest
     depends_on:
       - kratos_migrate
     environment:
-      DSN: postgres://kratos:password@kratosdb:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4-
+      DSN: postgres://kratosdb_social:password@kratosdb:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4-
     ports:
       - 4433:4433 # public
       - 4434:4434 # admin
@@ -56,7 +56,7 @@ services:
       - 4455:4455
 
   kratos_db:
-    container_name: kratosdb
+    container_name: kratosdb_social
     image: postgres:latest
     ports:
       - 5433:5432
