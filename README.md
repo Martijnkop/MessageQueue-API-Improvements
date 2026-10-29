@@ -20,30 +20,45 @@ The context of the application is a simple social media application, with at lea
 | /posts/reply/{postid} | POST | reply to a post |
 | /users/follow/{userid} | POST | follow a user |
 
+I would want to try out the new QUERY method, but its implemented nowhere lol
+
+Why is every company only focussing on AI
+
 ## BASE
 
 > /social-media
 
 This folder contains the ‘base’ version of the application. This is a Domain Driven Design implementation of the endpoints. The architecture choice is overkill, but it makes it easy to convert into other architectures. This will make the development time for my experiments (cache, message queues, …) as short as possible
 
+| Status | Missing Endpoints |
+| --- | --- |
+| In progress | /posts/search | 
+| | /users/follow/{userid} |
+
+## KAFKA
+
+> /social-kafka
+
+This folder contains the ‘kafka’ version of the application.
+
 | Status |
 | --- |
-| In progress |
+| To Do |
 
 ## LOAD-TESTER
 
 > /load-tester
 
-This will contain the K6 tests that will benchmark the applications.
+This contains the K6 benchmark that test the applications' performances.
 
 | Status |
 | --- |
-| To do |
+| DONE |
 
 ## DB SEEDER
 
-This will contain a simple program that will seed the database before testing. (To get valid tests, the starting databases should be the same)
+This contains a simple program that seeds the database before testing. (To get valid tests, the starting databases should be the same)
 
 | Status |
 | --- |
-| To do |
+| DONE |

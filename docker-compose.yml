@@ -41,19 +41,19 @@ services:
       - ./kratos:/etc/config/kratos
     command: serve -c /etc/config/kratos/kratos.yml --dev --watch-courier
 
-  kratos_ui:
-    image: oryd/kratos-selfservice-ui-node:latest
-    environment:
-      KRATOS_PUBLIC_URL: http://kratos:4433/
-      KRATOS_BROWSER_URL: http://localhost:4433/
-      PORT: 4455
-      COOKIE_SECRET: testasdf
-      CSRF_COOKIE_NAME: barboek
-      CSRF_COOKIE_SECRET: asdfasdf
-    networks:
-      - kratos_internal
-    ports:
-      - 4455:4455
+  # kratos_ui:
+  #   image: oryd/kratos-selfservice-ui-node:latest
+  #   environment:
+  #     KRATOS_PUBLIC_URL: http://kratos:4433/
+  #     KRATOS_BROWSER_URL: http://localhost:4433/
+  #     PORT: 4455
+  #     COOKIE_SECRET: testasdf
+  #     CSRF_COOKIE_NAME: barboek
+  #     CSRF_COOKIE_SECRET: asdfasdf
+  #   networks:
+  #     - kratos_internal
+  #   ports:
+  #     - 4455:4455
 
   kratos_db:
     container_name: kratosdb_social
