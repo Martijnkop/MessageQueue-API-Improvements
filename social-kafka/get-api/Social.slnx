@@ -1,0 +1,27 @@
+<Solution>
+  <Folder Name="/Business/">
+    <Project Path="Business/Abstractions/Business.Abstractions.csproj" />
+    <Project Path="Business/Business/Business.csproj" />
+  </Folder>
+  <Folder Name="/Common/">
+    <Project Path="Common/Primitives/Common.Primitives.csproj" />
+  </Folder>
+  <Folder Name="/Domain/">
+    <Project Path="Domain/Abstractions/Domain.Abstractions.csproj" />
+    <Project Path="Domain/Models/Domain.Models.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="Infrastructure/Persistence/Persistence.csproj" />
+  </Folder>
+  <Folder Name="/Presentation/">
+    <Project Path="Presentation/WebApi/WebApi.csproj" />
+  </Folder>
+  <Folder Name="/ServiceInstallers/">
+    <Project Path="ServiceInstallers/Abstractions/ServiceInstallers.Abstractions.csproj" />
+    <Project Path="ServiceInstallers/ServiceInstallers/ServiceInstallers.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="Startup/Startup.csproj" Id="31355fed-7d29-4df5-872e-8f2162b383bd" />
+</Solution>
