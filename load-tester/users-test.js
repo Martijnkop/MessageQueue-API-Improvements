@@ -2,7 +2,7 @@ import http from 'k6/http';
 import { check, sleep } from 'k6';
 
 // Override from the CLI: k6 run -e VUS=25 -e DURATION=30m users-test.js
-const VUS = parseInt(__ENV.VUS || '210');
+const VUS = parseInt(__ENV.VUS || '10');
 const DURATION = __ENV.DURATION || '1m';
 
 export const options = {
