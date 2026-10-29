@@ -41,9 +41,12 @@ This folder contains the ‘base’ version of the application. This is a Domain
 
 This folder contains the ‘kafka’ version of the application.
 
-| Status |
-| --- |
-| To Do |
+| Status | Missing Endpoints |
+| ------ | ----------------- |
+| In Progress | /posts (method: POST) |
+| | /posts/like/{postid} |
+| | /posts/reply/{postid} |
+| | /users/follow/{userid} |
 
 ## LOAD-TESTER
 
